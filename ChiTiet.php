@@ -16,14 +16,7 @@ abstract class ChiTiet
         echo $tab_string . "Ma: " . $this->maCT;
     }
 
-    protected function makeLevelTab($level)
-    {
-        $tab_string = "";
-        for ($i = 0; $i < $level; $i++) {
-            $tab_string .= "\t";
-        }
-        return $tab_string;
-    }
+  
 
     protected function GetMa()
     {
@@ -33,6 +26,18 @@ abstract class ChiTiet
     abstract protected function getGiaTien();
 
     abstract protected function getKhoiLuong();
+
+    ///Việt hóa dỡ nên e dùng in lịch nha a 
+    protected function makeLevelTab($level)
+    {
+        $tab_string = "";
+        for ($i = 0; $i < $level; $i++) {
+            $tab_string .= "\t";
+        }
+        return $tab_string;
+    }
+    
+    
 }
 
 
