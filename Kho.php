@@ -1,8 +1,6 @@
 <?php
 
 namespace ChiTiet;
-
-
 require_once "May.php";
 
 class Kho
@@ -12,27 +10,30 @@ class Kho
 
     public function nhapThongTinKho()
     {
-        $this->maKho = readline("Ma Kho: ");
-        $inputList = 0;
+        do{
+            $this->maKho = readline("Ma Kho: ");
+            if($this->maKho === "")
+            {
+                echo "Cho no cai ten di Anh!\n";
+            }
+        }while($this->maKho === "");
         $this->NhapDSMay();
     }
 
     public function nhapDSMay()
     {
+        $soLuong = 0;
+
         do {
-            $numberOfMay = readline("Nhap so luong may co trong kho " . $this->maKho . ":");
-            if(!is_numeric($numberOfMay) || !is_int($numberOfMay + 0))
+            $soLuong = readline("Nhap so luong may co trong kho " . $this->maKho . ": ");
+            if(!validateInput($soLuong, ['type'=>"bigger", 'values' => [0]]))
             {
-                echo "Vui long nhap vao so nguyen di A Nam! 🤣\n";
-            } 
-            else if ($numberOfMay <= 0) 
-            {
-                echo "So luong phai lon hon 0 chu! 🙄\n";
+                echo "Vui long nhap vao so nguyen(lon hon 0) di A Nam! \n";
             }
-        } while (!is_numeric($numberOfMay) || !is_int($numberOfMay + 0) || $numberOfMay <= 0);
+        } while (!validateInput($soLuong, ['type'=>"bigger", 'values' => [0]]));
 
 
-        for ($i = 0; $i < $numberOfMay; $i++) {
+        for ($i = 0; $i < $soLuong; $i++) {
             $temp = new May();
 
             echo "Nhap thong tin may thu " . ($i == 0 ? 'nhat' : $i+1 ). "\n";
@@ -46,10 +47,12 @@ class Kho
     {
         echo "Ma kho: " . $this->maKho . "\n";
         echo "{Danh sach May trong kho}:\n";
-
+        echo "____________________________________________________________\n";
         foreach ($this->listMay as $may) {
-            $may->xuatThongTin(1);
+            $may->xuatThongTin(0);
         }
+        echo "____________________________________________________________\n";
+
     }
 
     public function tinhKhoiLuongMay()
@@ -69,5 +72,18 @@ class Kho
         }
         return $tongTien;
     }
+    public function timMayTheoMa($ma)
+    {
+        $maytimduoc = null;
+        foreach ($this->listMay as $may) {
+            if($may->getMa() == $ma)
+            {
+                $maytimduoc[] = $may;
+            }
+        }
+        return $maytimduoc;
+    }
 }
+
+
 

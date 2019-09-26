@@ -1,24 +1,30 @@
 <?php
-
 namespace ChiTiet;
+require_once "ValidateInput.php";
+
 abstract class ChiTiet
 {
     protected $maCT;
 
     protected function nhapThongTin()
     {
-        $this->maCT = readline("Nhap Ma: ");
+        do{
+            $this->maCT = readline("Nhap Ma: ");
+            if($this->maCT === "")
+            {
+                echo "Khong nhap ma lat sao tim ra A Nam?\n";
+            }
+        }while($this->maCT === "");
     }
 
-    protected function xuatThongTin($level)
+    public function xuatThongTin($level)
     {
         $tab_string = $this->makeLevelTab($level);
         echo $tab_string . "Ma: " . $this->maCT;
     }
 
-  
 
-    protected function GetMa()
+    public function GetMa()
     {
         return $this->maCT;
     }
@@ -26,6 +32,7 @@ abstract class ChiTiet
     abstract protected function getGiaTien();
 
     abstract protected function getKhoiLuong();
+
 
     ///Việt hóa dỡ nên e dùng in lịch nha a 
     protected function makeLevelTab($level)
@@ -36,9 +43,13 @@ abstract class ChiTiet
         }
         return $tab_string;
     }
-    
-    
+
+
+
+
 }
+
+
 
 
 

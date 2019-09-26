@@ -1,55 +1,44 @@
 <?php
 
 namespace ChiTiet;
-
-require_once "ChiTiet.php";
 require_once "ChiTietDon.php";
 
 class ChiTietPhuc extends ChiTiet
 {
     private $listCT = array();
 
-    /* private
-    public function NhapThongTin()
-    {
-        $this->maCT = readline("Nhap ma san pham: ");
-    }*/
 
     public function nhapThongTin()
     {
-        $numberOfCT = 0;
-        $type = -1;
+        $soLuong = 0;
+        $loai = -1;
 
 
         parent::nhapThongTin();
         do {
-            $numberOfCT = readline("Nhap so luong CT co trong CT " . $this->maCT . ": ");
-            
-            if(!is_numeric($numberOfCT) || !is_int($numberOfCT + 0))
+            $soLuong = readline("Nhap so luong CT co trong CT '" . $this->maCT . "': ");
+            if(!validateInput($soLuong, ['type'=>"bigger", 'values' => [0]]))
             {
-                echo "Vui long nhap vao so nguyen di A Nam! 🤣\n";
-            } 
-            else if (($numberOfCT+0) <= 0) 
-            {
-                echo "So luong phai lon hon 0 chu! 🙄\n";
+                echo "Vui long nhap vao so nguyen(lon hon 0) di A Nam! \n";
             }
-        } while (!is_numeric($numberOfCT) || !is_int($numberOfCT + 0 ) || $numberOfCT <= 0);
+
+        } while (!validateInput($soLuong, ['type'=>"bigger", 'values' => [0]]));
 
 
-        for ($i = 0; $i < $numberOfCT; $i++) {
+        for ($i = 0; $i < $soLuong; $i++) {
 
             echo "Nhap CT thu " . ($i == 0 ? "nhat \n" : ($i + 1) . " cua " . $this->maCT . ":\n");
 
             //Validate number of type
             do {
-                $type = readline("Chon loai ct: [1 - CTD] || [2 - CTP]: ");
-                if (!is_numeric($type) && !is_int($type + 0 )|| $type != 1 && $type != 2) {
-                    echo "Loại không hợp lệ 😨!\n";
+                $loai = readline("Chon loai ct: [1 - CTD] || [2 - CTP]: ");
+                if (!validateInput($loai, ['type'=>"options", 'values' => [1,2]])) {
+                    echo "Loai khong hop le!\n";
                 }
-            } while (!is_numeric($type) || !is_int($type + 0 ) ||  $type != 1 && $type != 2);
+            } while (!validateInput($loai, ['type'=>"options", 'values' => [1,2]]));
 
             //case: choose CTD
-            if ($type == 1) {
+            if ($loai == 1) {
                 $ctd = new ChiTietDon();
                 $ctd->nhapThongTin();
                 array_push($this->listCT, $ctd);
@@ -76,6 +65,7 @@ class ChiTietPhuc extends ChiTiet
          */
         $level++;
         $tab_string = $this->makeLevelTab($level);
+        echo $tab_string . "=============\n";
 
         foreach ($this->listCT as $chiTiet) {
             $chiTiet->xuatThongTin($level);
@@ -105,6 +95,5 @@ class ChiTietPhuc extends ChiTiet
         return $khoiLuong;
     }
 }
-
 
 
